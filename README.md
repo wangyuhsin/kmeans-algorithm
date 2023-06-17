@@ -114,6 +114,10 @@ X = centroids[labels]
 # Display the compressed image
 io.imshow(X.reshape(height, width, 1).astype("uint8"))
 ```
+<p align="left">
+  <img src="dog.jpeg" width="500" title="original">
+  <img src="dog_compression.png" width="500" title="k=4 levels of gray">
+</p>
 
 ### Image Compression (Color)
 
