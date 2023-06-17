@@ -1,5 +1,7 @@
 # K-Means Clustering Algorithm
 
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 This repository contains a Python implementation of the K-Means clustering algorithm. The K-Means algorithm is an unsupervised machine learning technique used to group data points together in a dataset based on their features. It identifies patterns in a dataset by computing the similarities between data points and partitioning the dataset into clusters, where the data points within each cluster are more similar to each other than to those in other clusters.
 
 ## Clustering
@@ -133,8 +135,9 @@ from kmeans import kmeans
 img = 'dogs.jpeg'
 X = io.imread(img)
 
-# Display the original image
-io.imshow(img)
+# Store the image height and width
+height = X.shape[0]
+width = X.shape[1]
 
 # Flatten the image into a 1D array
 X = X.squeeze().reshape(-1, 1)
@@ -149,19 +152,35 @@ centroids, labels = kmeans(X, k=k, centroids='kmeans++', tolerance=0.01)
 X = centroids[labels]
 
 # Display the compressed image
-io.imshow(X.reshape(1000, 1500, 3).astype("uint8"))
+io.imshow(X.reshape(height, width, 3).astype("uint8"))
 ```
+<p align="left">
+  <img src="dogs.jpeg" width="400" title="original">
+  <img src="dogs_compression.png" width="400" title="k=6 colors">
+</p>
 
-### Spectral Clustering
+## Spectral Clustering
 
-Spectral clustering is another popular clustering algorithm that can handle non-linearly separable data. Here's an example of using spectral clustering for clustering a dataset:
+Spectral clustering is another popular clustering algorithm in machine learning which is commonly used in the fields of community detection and recommendation systems. It uses eigenvalues and eigenvectors of a similarity matrix to partition the given dataset.
+
+The basic idea of spectral clustering is to transform the data to a different space where the clusters are easily separable, and then apply a clustering algorithm to the transformed data.
+
+### Advantages of Spectral Clustering
+Compared to K-Means, spectral clustering has the following advantages:
+
+- Spectral clustering can handle non-linearly separable data and data with complex structures.
+- Since spectral clustering considers the overall structure of the data, it is more robust to noise and outliers.
+- Spectral clustering can automatically determine the number of clusters
+- Spectral clustering can handle datasets with different data types
+
+For example, the data set I use below is not linearly separable, it shows that spectral clustering performs much better than K-Means in this case.
 
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.datasets import make_circles
-from kmeans import kmeans
 from sklearn.cluster import SpectralClustering
+from kmeans import kmeans
 
 # Generate a dataset with two interlaced circles
 X, _ = make_circles(n_samples=500, noise=0.1, factor=0.2)
@@ -171,9 +190,7 @@ k = 2
 centroids_kmeans, labels_kmeans = kmeans(X, k=k, centroids='kmeans++')
 
 # Perform Spectral clustering
-spectral_cluster = SpectralClustering(n_clusters=k, affinity="nearest
-
-_neighbors")
+spectral_cluster = SpectralClustering(n_clusters=k, affinity="nearest_neighbors")
 labels_spectral = spectral_cluster.fit_predict(X)
 
 # Plot the results of K-Means clustering
@@ -188,9 +205,27 @@ plt.scatter(X[:, 0], X[:, 1], c=colors_spectral[labels_spectral])
 plt.title("Spectral Clustering")
 plt.show()
 ```
+<p align="left">
+  <img src="kmeans.png" width="400" title="K-Means">
+  <img src="spectral_clustering.png" width="400" title="Spectral Clustering">
+</p>
+
+### Disadvantages of Spectral Clustering
+However, spectral clustering also has its weaknesses:
+
+- Spectral clustering can be computationally expensive, especially when dealing with large datasets
+- Since spectral clustering is a graph-based clustering algorithm, it requires knowledge of the graph structure of the data
 
 ## Conclusion
 
-This repository provides a Python implementation of the K-Means clustering algorithm. It also includes an example of using K-Means for image compression and a comparison with spectral clustering. Clustering algorithms like K-Means and spectral clustering are powerful tools for analyzing and understanding complex datasets. Feel free to explore and adapt the code for your own projects!
+In this repository, you will find a Python implementation of the K-Means clustering algorithm, along with examples showcasing its applications in image compression and a comparison with spectral clustering. Clustering algorithms like K-Means and spectral clustering are powerful tools for data analysis and understanding complex datasets. Feel free to explore and adapt the code for your own projects!
 
 If you have any questions or suggestions, please feel free to reach out.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## Acknowledgments
+
+The project structure is adapted from the MSDS 689 course materials provided by the University of San Francisco (USFCA-MSDS). Special thanks to the course instructors for the inspiration.
